@@ -12,6 +12,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using ParkyAPI.Data;
+using ParkyAPI.Repository;
+using ParkyAPI.Repository.IRepository;
+using AutoMapper;
+using ParkyAPI.Mapper;
 
 namespace ParkyAPI
 {
@@ -27,10 +31,15 @@ namespace ParkyAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+            services.AddDbContext<ApplicationDbContext>(options =>
+      options.UseSqlServer(Configuration.GetConnectionString("ParkyConnection")));
 
-       services.AddDbContext<ApplicationDbContext>(options =>
-        options.UseSqlServer(Configuration.GetConnectionString("ParkyConnection")));
+          
+
+            services.AddScoped<INParkRepository, NParkRepository>(); //using this we can acess nationalPark repository in any other controllers.
+            services.AddAutoMapper(typeof(ParkyMappings)); //registraring Mapping
+
+            services.AddControllers();
 
         }
 

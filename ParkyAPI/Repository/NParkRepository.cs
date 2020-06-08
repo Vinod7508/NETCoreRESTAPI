@@ -32,12 +32,13 @@ namespace ParkyAPI.Repository
 
 
        //Delete Method for National Park
-
         public bool DeleteNpark(NPark nPark)
         {
             _db.NParks.Remove(nPark);
             return Save();
         }
+
+
 
         //Method for Getting All National Parks
         public ICollection<NPark> GetAllNParks()
@@ -46,11 +47,18 @@ namespace ParkyAPI.Repository
         }
 
 
+
+
+
+
         //Method for Getting one National Parks based on ID
         public NPark GetPark(int NParkId)
         {
             return _db.NParks.FirstOrDefault(a => a.Id == NParkId);
         }
+
+
+
 
         //Method to check wheather National Park Exist with Name
         public bool NparkExist(string Name)
@@ -58,6 +66,9 @@ namespace ParkyAPI.Repository
             bool value = _db.NParks.Any(a => a.Name.ToLower().Trim() == Name.ToLower().Trim());
             return value;
         }
+
+
+
 
         //Method to check wheather National Park Exist with Passed NParkId
         public bool NparkExist(int NParkId)
@@ -67,10 +78,12 @@ namespace ParkyAPI.Repository
         }
 
 
+
         public bool Save()
         {
             return _db.SaveChanges() >= 0 ? true : false;
         }
+
 
 
         //Method to update existing National Park
