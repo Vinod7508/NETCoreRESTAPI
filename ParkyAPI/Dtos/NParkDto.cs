@@ -12,13 +12,13 @@ namespace ParkyAPI.Dtos
         //for conversion nparkDTO object to npark model class object..we have used autommaper configuration.
 
 
-        //[Key]
+        
         public int Id { get; set; }
 
-        //[Required]
+        [Required]
         public string Name { get; set; }
 
-        //[Required]
+        [Required]
         public string State { get; set; }
 
         public DateTime Created { get; set; }

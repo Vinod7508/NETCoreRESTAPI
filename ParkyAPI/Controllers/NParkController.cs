@@ -6,6 +6,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ParkyAPI.Dtos;
+using ParkyAPI.Models;
 using ParkyAPI.Repository.IRepository;
 
 namespace ParkyAPI.Controllers
@@ -53,7 +54,7 @@ namespace ParkyAPI.Controllers
 
 
         //get single National Park
-        [HttpGet("{NParkId:int}")]// routingS
+        [HttpGet("{NParkId:int}",Name ="GetNationalPark")]// routingS
         public IActionResult GetSingleNationalParks(int NParkId)
         {
 
@@ -67,9 +68,89 @@ namespace ParkyAPI.Controllers
             return Ok(singleparkDto);
 
         }
-         
+
+       
 
 
+
+        [HttpPost]
+        public IActionResult CreateNationalPark([FromBody] NParkDto nParkDto)
+        {
+            if (nParkDto == null)
+            {
+                return BadRequest(ModelState); //model state typically contains all of the errors if any are encountered. 
+            }
+
+            if (_nParkRepository.NparkExist(nParkDto.Name))   //model validation.
+            {
+               //next what they will do is check...if this is a duplicate entry.
+                ModelState.AddModelError("", "National park with same name already exist");
+                return StatusCode(404, ModelState);
+            }
+
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var newparkobj = _mapper.Map<NPark>(nParkDto);  //here we are converting our incoming dto object into a our domain model class
+
+            if (!_nParkRepository.CreateNpark(newparkobj))  //model validation.
+            {
+                ModelState.AddModelError("", $"something went wrong for record {newparkobj.Name}");
+                return StatusCode(500, ModelState);
+            }
+
+            return CreatedAtRoute("GetNationalPark",new { NParkId= newparkobj.Id}, newparkobj);
+            //we used createdatroute rather than ok()...postman now showing 201 created after posting a data...!!
+        }
+
+
+
+
+        [HttpPatch("{NParkId:int}", Name = "UpdateNationalPark")]// routingS
+        public IActionResult UpdateNpark(int NParkId, [FromBody] NParkDto nParkDto)
+        {
+            if (nParkDto == null || NParkId != nParkDto.Id)
+            {
+                return BadRequest(ModelState); //model state typically contains all of the errors if any are encountered. 
+            }
+
+
+            var newparkobj = _mapper.Map<NPark>(nParkDto);  //here we are converting our incoming dto object into a our domain model class
+
+            if (!_nParkRepository.UpdateNpark(newparkobj))  //model validation.
+            {
+                ModelState.AddModelError("", $"something went wrong while updating a record for {newparkobj.Name}");
+                return StatusCode(500, ModelState);
+            }
+
+            return NoContent();
+        }
+
+
+
+        [HttpDelete("{NparkId:int}")]
+        public IActionResult DeleteNationalPark(int NparkId)
+        {
+
+
+            if (!_nParkRepository.NparkExist(NparkId)){
+                return BadRequest(ModelState);
+            }
+
+            var getNationalParkToDelete = _nParkRepository.GetPark(NparkId);
+
+            if (!_nParkRepository.DeleteNpark(getNationalParkToDelete))
+            {
+                ModelState.AddModelError("", $"Something went wrong while Deleteting a record {getNationalParkToDelete.Name}");
+                return StatusCode(500, ModelState);
+            }
+
+            return NoContent();
+
+        }
 
     }
 }
