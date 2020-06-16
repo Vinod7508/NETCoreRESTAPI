@@ -38,6 +38,16 @@ namespace ParkyAPI
 
             services.AddScoped<INParkRepository, NParkRepository>(); //using this we can acess nationalPark repository in any other controllers.
             services.AddAutoMapper(typeof(ParkyMappings)); //registraring Mapping
+            services.AddSwaggerGen(options =>
+            {
+                options.SwaggerDoc("ParkyOpenAPISpec",
+                    new Microsoft.OpenApi.Models.OpenApiInfo()
+                    {
+                        Title = "Parky API",
+                        Version = "1"
+
+                    });
+            });
 
             services.AddControllers();
 
@@ -52,7 +62,7 @@ namespace ParkyAPI
             }
 
             app.UseHttpsRedirection();
-
+            app.UseSwagger();
             app.UseRouting();
 
             app.UseAuthorization();
