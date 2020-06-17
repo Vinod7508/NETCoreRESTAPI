@@ -16,6 +16,8 @@ using ParkyAPI.Repository;
 using ParkyAPI.Repository.IRepository;
 using AutoMapper;
 using ParkyAPI.Mapper;
+using System.Reflection;
+using System.IO;
 
 namespace ParkyAPI
 {
@@ -38,15 +40,33 @@ namespace ParkyAPI
 
             services.AddScoped<INParkRepository, NParkRepository>(); //using this we can acess nationalPark repository in any other controllers.
             services.AddAutoMapper(typeof(ParkyMappings)); //registraring Mapping
+
+            //registraraing swagger generator
             services.AddSwaggerGen(options =>
             {
-                options.SwaggerDoc("ParkyOpenAPISpec",
+                options.SwaggerDoc("ParkyOpenAPISpec",                 //swagger openapi specification.
                     new Microsoft.OpenApi.Models.OpenApiInfo()
                     {
                         Title = "Parky API",
-                        Version = "1"
+                        Version = "1",
+                        Description="Udemy course",
+                        Contact = new Microsoft.OpenApi.Models.OpenApiContact()  //extra feature in api documentation
+                        {
+                            Email="vinod_p7508@outlook.com",
+                            Name="vinod",
+                            Url= new Uri("https://wwww.bhrugen.com"),
 
+                        },
+                        License = new Microsoft.OpenApi.Models.OpenApiLicense() 
+                            {
+                            Name = "MIT License",
+                            Url = new Uri("https://en.wikipedia.org/wiki/MIT_License")
+                            }
+                        //we can also add extra extension here
                     });
+                var xmlCommentFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var cmlCommentsFullPath = Path.Combine(AppContext.BaseDirectory, xmlCommentFile);
+                options.IncludeXmlComments(cmlCommentsFullPath);
             });
 
             services.AddControllers();
@@ -62,7 +82,17 @@ namespace ParkyAPI
             }
 
             app.UseHttpsRedirection();
+
+            //Configuration for swaggerUI.
             app.UseSwagger();
+            app.UseSwaggerUI(options =>
+            {
+                options.SwaggerEndpoint("/swagger/ParkyOpenAPISpec/swagger.json", "Parky API");
+                options.RoutePrefix = "";   //to set swaggerUI as default opening window when we run the application.
+            });
+
+
+
             app.UseRouting();
 
             app.UseAuthorization();

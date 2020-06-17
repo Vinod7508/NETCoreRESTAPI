@@ -16,8 +16,8 @@ namespace ParkyAPI.Controllers
     // API forward slash the controller name the controller name is national parks.
     //So if you type API forward slash national parks that will be the default road for all of the action methods here and you can see it inherits from controller base.You can change it to inherit just from the controller.
 
-
     [ApiController]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public class NParkController : Controller
     {
         private INParkRepository _nParkRepository;
@@ -31,7 +31,15 @@ namespace ParkyAPI.Controllers
 
 
 
+
+
+        /// <summary>
+        /// Get list of all national parks
+        /// </summary>
+        /// <returns></returns>
+
         [HttpGet]
+        [ProducesResponseType(200,Type = typeof(List<NParkDto>))]
         public IActionResult GetNationalParks()
         {
             var nparkdata = _nParkRepository.GetAllNParks();
@@ -53,8 +61,18 @@ namespace ParkyAPI.Controllers
 
 
 
-        //get single National Park
+
+        /// <summary>
+        /// Get Individual national park
+        /// </summary>
+        /// <param name="NParkId">the id of national park</param>
+        /// <returns></returns>
+
         [HttpGet("{NParkId:int}",Name ="GetNationalPark")]// routingS
+        [ProducesResponseType(200, Type = typeof(List<NParkDto>))]
+        [ProducesResponseType(404)]
+        [ProducesDefaultResponseType]
+
         public IActionResult GetSingleNationalParks(int NParkId)
         {
 
@@ -74,6 +92,10 @@ namespace ParkyAPI.Controllers
 
 
         [HttpPost]
+        [ProducesResponseType(201, Type = typeof(List<NParkDto>))]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult CreateNationalPark([FromBody] NParkDto nParkDto)
         {
             if (nParkDto == null)
@@ -110,6 +132,9 @@ namespace ParkyAPI.Controllers
 
 
         [HttpPatch("{NParkId:int}", Name = "UpdateNationalPark")]// routingS
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)] 
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult UpdateNpark(int NParkId, [FromBody] NParkDto nParkDto)
         {
             if (nParkDto == null || NParkId != nParkDto.Id)
@@ -130,8 +155,11 @@ namespace ParkyAPI.Controllers
         }
 
 
-
         [HttpDelete("{NparkId:int}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status409Conflict)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult DeleteNationalPark(int NparkId)
         {
 
