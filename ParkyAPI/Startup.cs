@@ -39,6 +39,10 @@ namespace ParkyAPI
           
 
             services.AddScoped<INParkRepository, NParkRepository>(); //using this we can acess nationalPark repository in any other controllers.
+            services.AddScoped<ITrailRepository, TrailRepository>(); //using this we can acess nationalPark repository in any other controllers.
+
+
+
             services.AddAutoMapper(typeof(ParkyMappings)); //registraring Mapping
 
             //registraraing swagger generator

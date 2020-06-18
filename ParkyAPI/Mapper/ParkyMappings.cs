@@ -15,6 +15,8 @@ namespace ParkyAPI.Mapper
             // here we are mappping application domain class with and Dto and vice versa.
             CreateMap<NPark, NParkDto>().ReverseMap();  
             CreateMap<Trail, TrailDto>().ReverseMap();
+            CreateMap<Trail, TrailupdateDto>().ReverseMap();
+            CreateMap<Trail, TrailCreateDto>().ReverseMap();
         }
 
 
