@@ -10,7 +10,7 @@ namespace ParkyAPI.Dtos
 {
     public class TrailDto
     {
-       
+        
         public int Id { get; set; }
 
         [Required]
