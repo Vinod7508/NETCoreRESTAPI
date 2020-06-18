@@ -17,6 +17,7 @@ namespace ParkyAPI.Controllers
     //So if you type API forward slash national parks that will be the default road for all of the action methods here and you can see it inherits from controller base.You can change it to inherit just from the controller.
 
     [ApiController]
+    [ApiExplorerSettings(GroupName = "ParkyOpenAPISpecNP")]  //bunding api controlleer call within associate document/specification.
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public class NParkController : Controller
     {

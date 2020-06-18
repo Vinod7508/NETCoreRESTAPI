@@ -41,19 +41,17 @@ namespace ParkyAPI
             services.AddScoped<INParkRepository, NParkRepository>(); //using this we can acess nationalPark repository in any other controllers.
             services.AddScoped<ITrailRepository, TrailRepository>(); //using this we can acess nationalPark repository in any other controllers.
 
-
-
             services.AddAutoMapper(typeof(ParkyMappings)); //registraring Mapping
 
             //registraraing swagger generator
             services.AddSwaggerGen(options =>
             {
-                options.SwaggerDoc("ParkyOpenAPISpec",                 //swagger openapi specification.
+                options.SwaggerDoc("ParkyOpenAPISpecNP",                 //swagger openapi specification/document configuration.
                     new Microsoft.OpenApi.Models.OpenApiInfo()
                     {
-                        Title = "Parky API",
+                        Title = "Parky API(NationalPark)",
                         Version = "1",
-                        Description="Udemy course",
+                        Description="Udemy course API National Park",
                         Contact = new Microsoft.OpenApi.Models.OpenApiContact()  //extra feature in api documentation
                         {
                             Email="vinod_p7508@outlook.com",
@@ -68,6 +66,29 @@ namespace ParkyAPI
                             }
                         //we can also add extra extension here
                     });
+
+
+                options.SwaggerDoc("ParkyOpenAPISpecTrails",                 //swagger openapi specification for trail end points
+                new Microsoft.OpenApi.Models.OpenApiInfo()
+                {
+                    Title = "Parky API(Trails)",
+                    Version = "1",
+                    Description = "Udemy course API Trails",
+                    Contact = new Microsoft.OpenApi.Models.OpenApiContact()  //extra feature in api documentation
+                        {
+                        Email = "vinod_p7508@outlook.com",
+                        Name = "vinod",
+                        Url = new Uri("https://wwww.bhrugen.com"),
+
+                    },
+                    License = new Microsoft.OpenApi.Models.OpenApiLicense()
+                    {
+                        Name = "MIT License",
+                        Url = new Uri("https://en.wikipedia.org/wiki/MIT_License")
+                    }
+                        //we can also add extra extension here
+                    });
+
                 var xmlCommentFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                 var cmlCommentsFullPath = Path.Combine(AppContext.BaseDirectory, xmlCommentFile);
                 options.IncludeXmlComments(cmlCommentsFullPath);
@@ -91,7 +112,8 @@ namespace ParkyAPI
             app.UseSwagger();
             app.UseSwaggerUI(options =>
             {
-                options.SwaggerEndpoint("/swagger/ParkyOpenAPISpec/swagger.json", "Parky API");
+                options.SwaggerEndpoint("/swagger/ParkyOpenAPISpecNP/swagger.json", "Parky API NParks");
+                options.SwaggerEndpoint("/swagger/ParkyOpenAPISpecTrails/swagger.json", "Parky API Trails");  //configuring seperate end point for 
                 options.RoutePrefix = "";   //to set swaggerUI as default opening window when we run the application.
             });
 
