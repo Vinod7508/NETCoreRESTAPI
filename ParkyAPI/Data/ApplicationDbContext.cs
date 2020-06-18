@@ -13,6 +13,7 @@ namespace ParkyAPI.Data
         {
         }
 
-        public DbSet<NPark> NParks { get; set; }  //for creation of tables
+        public DbSet<NPark> NParks { get; set; }  //for creation of Npark tables
+        public DbSet<Trail> Trails { get; set; }  //for creation of trail tables
     }
 }

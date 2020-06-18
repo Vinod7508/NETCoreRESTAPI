@@ -12,7 +12,9 @@ namespace ParkyAPI.Mapper
     {
         public ParkyMappings()
         {
-            CreateMap<NPark, NParkDto>().ReverseMap();  // here we are mappping application domain class with and Dto and vice versa.
+            // here we are mappping application domain class with and Dto and vice versa.
+            CreateMap<NPark, NParkDto>().ReverseMap();  
+            CreateMap<Trail, TrailDto>().ReverseMap();
         }
 
 

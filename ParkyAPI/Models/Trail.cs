@@ -34,7 +34,7 @@ namespace ParkyAPI.Models
         [ForeignKey("NParkId")]
         public NPark NPark { get; set; }
 
-        public DateTime DateCreated { get; set; }  //we are not exposing this property to outsideword/ftos
+        public DateTime DateCreated { get; set; }  //we are not exposing this property to outsideword/dtos
 
 
     }
