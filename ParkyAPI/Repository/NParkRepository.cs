@@ -84,8 +84,6 @@ namespace ParkyAPI.Repository
             return _db.SaveChanges() >= 0 ? true : false;
         }
 
-
-
         //Method to update existing National Park
         public bool UpdateNpark(NPark nPark)
         {

@@ -11,13 +11,17 @@ using ParkyAPI.Repository.IRepository;
 
 namespace ParkyAPI.Controllers
 {
-    [Route("api/[controller]")]  //access using API/Controller name
 
+
+
+
+    [Route("api/v{version:apiVersion}/Npark")]
+    //[Route("api/[controller]")]  //access using API/Controller name
     // API forward slash the controller name the controller name is national parks.
     //So if you type API forward slash national parks that will be the default road for all of the action methods here and you can see it inherits from controller base.You can change it to inherit just from the controller.
 
     [ApiController]
-    [ApiExplorerSettings(GroupName = "ParkyOpenAPISpecNP")]  //bunding api controlleer call within associate document/specification.
+    //[ApiExplorerSettings(GroupName = "ParkyOpenAPISpecNP")]  //bunding api controlleer call within associate document/specification.
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public class NParkController : Controller
     {
@@ -125,7 +129,7 @@ namespace ParkyAPI.Controllers
                 return StatusCode(500, ModelState);
             }
 
-            return CreatedAtRoute("GetNationalPark",new { NParkId= newparkobj.Id}, newparkobj);
+            return CreatedAtRoute("GetNationalPark",new { version=HttpContext.GetRequestedApiVersion().ToString(),NParkId= newparkobj.Id}, newparkobj);
             //we used createdatroute rather than ok()...postman now showing 201 created after posting a data...!!
         }
 

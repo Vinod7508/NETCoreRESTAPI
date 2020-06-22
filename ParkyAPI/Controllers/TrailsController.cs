@@ -11,13 +11,15 @@ using ParkyAPI.Repository.IRepository;
 
 namespace ParkyAPI.Controllers
 {
-    [Route("api/Trails")]  //access using API/Controller name
-
+    //[Route("api/Trails")]  //access using API/Controller name
     // API forward slash the controller name the controller name is national parks.
     //So if you type API forward slash trails that will be the default road for all of the action methods here and you can see it inherits from controller base.You can change it to inherit just from the controller.
 
+
+    [Route("api/v{version:apiVersion}/trails")]   //chnages in routing after versioning configuration.
+
     [ApiController]
-    [ApiExplorerSettings(GroupName = "ParkyOpenAPISpecTrails")]  //bunding api controlleer call within associate document/specification.
+    //[ApiExplorerSettings(GroupName = "ParkyOpenAPISpecTrails")]  //bunding api controlleer call within associate document/specification.
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public class TrailsController : Controller
     {
@@ -73,7 +75,6 @@ namespace ParkyAPI.Controllers
         [ProducesResponseType(200, Type = typeof(List<TrailDto>))]
         [ProducesResponseType(404)]
         [ProducesDefaultResponseType]
-
         public IActionResult GetSingleTrail(int TrailId)
         {
 
@@ -88,7 +89,36 @@ namespace ParkyAPI.Controllers
 
         }
 
-       
+
+        [HttpGet("[Action]/{NationalParkId:int}")]// routingS
+        [ProducesResponseType(200, Type = typeof(List<TrailDto>))]
+        [ProducesResponseType(404)]
+        [ProducesDefaultResponseType]
+        public IActionResult GetTrailInNationalPark(int NationalParkId)
+        {
+
+            var trailslist = _trailRepository.GetTrailsInNationalPark(NationalParkId);
+            if (trailslist == null)
+            {
+                return NotFound();
+            }
+
+
+            var objdto = new List<TrailDto>();
+            foreach ( var obj in trailslist)
+            {
+                objdto.Add(_mapper.Map<TrailDto>(obj));
+            }
+
+            return Ok(objdto);
+
+        }
+
+
+
+
+
+
 
 
 
