@@ -11,8 +11,6 @@ namespace ParkyAPI.Dtos
 
         //for conversion nparkDTO object to npark model class object..we have used autommaper configuration.
 
-
-        
         public int Id { get; set; }
 
         [Required]
@@ -22,7 +20,7 @@ namespace ParkyAPI.Dtos
         public string State { get; set; }
 
         public DateTime Created { get; set; }
-
+          
         public byte[] Picture { get; set; }
 
         public DateTime Established { get; set; }
