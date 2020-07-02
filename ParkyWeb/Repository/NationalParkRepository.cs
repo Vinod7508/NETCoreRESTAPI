@@ -12,7 +12,7 @@ namespace ParkyWeb.Repository
     {
         private readonly IHttpClientFactory _clientFactory;
 
-        public NationalParkRepository(IHttpClientFactory clientFactory)
+        public NationalParkRepository(IHttpClientFactory clientFactory) : base(clientFactory)
         {
             _clientFactory = clientFactory;
         }
